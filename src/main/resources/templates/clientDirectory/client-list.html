@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+
+    <style>
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<a href="/client/add">Add</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}"></td>
+        <td th:text="${client.nameClient}"></td>
+        <td th:text="${client.email}"></td>
+        <td th:text="${client.phoneNumber}"></td>
+        <td>
+            <a th:href="@{/client/edit/{id}(id=${client.id})}">Edit</a>
+            &nbsp;&nbsp;&nbsp;
+            <a th:href="@{/client/remove/{id}(id=${client.id})}">Remove</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

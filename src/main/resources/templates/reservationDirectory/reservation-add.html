@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Reservation</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<form action="#" th:action="@{add}" th:object="${reservation}" method="post">
+    <label>Client: </label>
+    <select th:field="*{client.id}" required>
+        <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.nameClient}"/>
+    </select><br/>
+    <label>Car: </label>
+    <select th:field="*{car.id}" required>
+        <option th:each="car : ${cars}" th:value="${car.id}" th:text="${car.displayName}"/>
+    </select><br/>
+    <label>Start Date: </label>
+    <input type="date" th:field="*{startDate}" required/><br/>
+    <label>End Date: </label>
+    <input type="date" th:field="*{endDate}" required/><br/>
+    <label>Status: </label>
+    <select th:field="*{status}">
+        <option th:value="Accepted">Accepted</option>
+        <option th:value="Rejected">Rejected</option>
+    </select><br/>
+    <input type="submit"/>
+</form>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

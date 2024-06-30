@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+
+    <style>
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<a href="/employee/add">Add</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.id}"></td>
+        <td th:text="${employee.nameEmployee}"></td>
+        <td th:text="${employee.position}"></td>
+        <td th:text="${employee.email}"></td>
+        <td th:text="${employee.phoneNumber}"></td>
+        <td>
+            <a th:href="@{/employee/edit/{id}(id=${employee.id})}">Edit</a>
+            &nbsp;&nbsp;&nbsp;
+            <a th:href="@{/employee/remove/{id}(id=${employee.id})}">Remove</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

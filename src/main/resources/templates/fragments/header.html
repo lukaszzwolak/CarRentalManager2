@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Header with Icons</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 14px 0;
+        }
+
+        .navbar table {
+            width: 100%;
+            max-width: 1000px;
+            table-layout: fixed;
+        }
+
+        .navbar td {
+            text-align: center;
+        }
+
+        .navbar a {
+            display: inline-block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar a .icon {
+            margin-right: 8px;
+        }
+
+        .content {
+            padding-top: 60px;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar" th:fragment="header">
+    <table>
+        <tr>
+            <td>
+                <a href="/car/list">
+                    <span class="icon">&#128663;</span>
+                    Cars
+                </a>
+            </td>
+            <td>
+                <a href="/brand/list">
+                    <span class="icon">&#128663;</span>
+                    Brand
+                </a>
+            </td>
+            <td>
+                <a href="/client/list">
+                    <span class="icon">&#128100;</span>
+                    Clients
+                </a>
+            </td>
+            <td>
+                <a href="/employee/list">
+                    <span class="icon">&#128188;</span>
+                    Employees
+                </a>
+            </td>
+            <td>
+                <a href="/invoice/list">
+                    <span class="icon">&#128179;</span>
+                    Invoices
+                </a>
+            </td>
+            <td>
+                <a href="/reservation/list">
+                    <span class="icon">&#128197;</span>
+                    Reservations
+                </a>
+            </td>
+            <td>
+                <a href="/invoice/archived/list">
+                    <span class="icon">📦</span>
+                    Archived invoices
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

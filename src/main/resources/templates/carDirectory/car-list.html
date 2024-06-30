@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Cars</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content {
+            padding-top: 80px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            color: #333;
+            margin-left: 20px;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .add-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .add-link:hover {
+            background-color: #0056b3;
+        }
+
+        .add-link .icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        td a {
+            color: #007BFF;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        td a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="content">
+    <div class="header">
+        <h1 class="title">Cars</h1>
+        <a href="/car/add" class="add-link">
+            <span class="icon">&#43;</span>
+            Add Car
+        </a>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Registration</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="car : ${cars}">
+            <td th:text="${car.id}"></td>
+            <td th:text="${car.brand}"></td>
+            <td th:text="${car.model}"></td>
+            <td th:text="${car.registrationNumber}"></td>
+            <td th:text="${car.status}"></td>
+            <td>
+                <a th:href="@{/car/edit/{id}(id=${car.id})}">Edit</a>
+                &nbsp;&nbsp;&nbsp;
+                <a onclick="return confirm('Are you sure?');" th:href="@{/car/remove/{id}(id=${car.id})}">Remove</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

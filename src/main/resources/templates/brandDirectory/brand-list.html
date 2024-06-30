@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Brands List</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<a href="/home" style="text-decoration: none; color: #007BFF; margin-top: 20px; display: block;">
+    &lt; Return to main page
+</a>
+
+<div th:if="${successMessage}" style="color: green;">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<a href="/brand/add" style="display: block; margin-top: 20px;">Add new brand</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Brand</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="brand : ${brands}">
+        <td th:text="${brand.id}">1</td>
+        <td th:text="${brand.name}">Brand name</td>
+        <td>
+            <a th:href="@{/brand/edit/{id}(id=${brand.id})}">Edit</a> |
+            <a th:href="@{/brand/remove/{id}(id=${brand.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
