@@ -2,8 +2,61 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Car</title>
-    <link rel="stylesheet" href="/css/styles.css"/>
+    <title>Edit car</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <a href="javascript:history.back()" style="text-decoration: none; color: #007BFF; margin-top: 20px; display: block;">
@@ -13,19 +66,16 @@
 <form action="#" th:action="@{/car/edit}" th:object="${car}" method="post">
     <input type="hidden" th:field="*{id}" />
     <label>Brand: </label>
-    <select th:field="*{brand}">
-        <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
-    </select><br/>
-    <span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span><br/>
+    <input type="text" th:field="*{brand}" required/><br/>
     <label>Model: </label>
     <input type="text" th:field="*{model}" required/><br/>
-    <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span><br/>
-    <label>Registration Number: </label>
+    <label>Registration: </label>
     <input type="text" th:field="*{registrationNumber}" required/><br/>
-    <span th:if="${#fields.hasErrors('registrationNumber')}" th:errors="*{registrationNumber}"></span><br/>
     <label>Status: </label>
-    <input type="text" th:field="*{status}" required/><br/>
-    <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span><br/>
+    <select th:field="*{status}">
+        <option th:value="Available">Available</option>
+        <option th:value="Rent">Rent</option>
+    </select><br/>
     <input type="submit" value="Save"/>
 </form>
 

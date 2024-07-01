@@ -8,20 +8,25 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-public class Brand {
+public class Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Brand name is required")
-    @Size(min = 2, message = "Brand name must be at least 2 characters")
+    @NotBlank(message = "Model name is required")
+    @Size(min = 2, message = "Model name must be at least 2 characters")
     private String name;
 
-    @OneToMany(mappedBy = "brand")
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
     @JsonBackReference
+    private Brand brand;
+
+    @OneToMany(mappedBy = "model")
     private List<Car> cars;
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -36,6 +41,14 @@ public class Brand {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public List<Car> getCars() {

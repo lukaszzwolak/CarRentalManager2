@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Add car</title>
-
+    <title>Dodaj samochód</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,25 +68,54 @@
 </head>
 <body>
 <a href="javascript:history.back()" style="text-decoration: none; color: #007BFF; margin-top: 20px; display: block; font-size: 20px;">
-    &#8592; Return
+    &#8592; Powrót
 </a>
 
 <form action="#" th:action="@{add}" th:object="${car}" method="post">
     <label>Brand: </label>
-    <select th:field="*{brand.id}" required>
-        <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}"/>
-    </select><br/>
+    <input type="text" id="brandInput" required/><br/>
+    <input type="hidden" th:field="*{brand.id}" id="brandId" /><br/>
 
     <label>Model: </label>
     <input type="text" th:field="*{model}" required/><br/>
     <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span><br/>
 
-    <label>Registration: </label>
+
+    <label>Rejestracja: </label>
     <input type="text" th:field="*{registrationNumber}" required/><br/>
     <span th:if="${#fields.hasErrors('registrationNumber')}" th:errors="*{registrationNumber}"></span><br/>
 
     <input type="submit"/>
 </form>
+
+<script>
+    $(function() {
+        $("#brandInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/api/brands/autocomplete",
+                    data: {
+                        query: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data, function(brand) {
+                            return {
+                                label: brand.name,
+                                value: brand.name,
+                                id: brand.id
+                            };
+                        }));
+                    }
+                });
+            },
+            select: function(event, ui) {
+                $("#brandInput").val(ui.item.label);
+                $("#brandId").val(ui.item.id);
+                return false;
+            }
+        });
+    });
+</script>
 
 <div th:replace="fragments/footer :: footer"></div>
 </body>

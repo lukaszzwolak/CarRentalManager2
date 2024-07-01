@@ -31,8 +31,7 @@ public class BrandService {
         brandRepository.deleteById(id);
     }
 
-    public List<Brand> getBrandsStartingWith(String prefix) {
+    public List<Brand> findByPrefix(String prefix) {
         return brandRepository.findByPrefix(prefix);
     }
-
 }

@@ -20,6 +20,27 @@ public class Client {
     private String email;
     private String phoneNumber;
 
+    private boolean emailConfirmed;
+
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    private EmailConfirmation emailConfirmation;
+
+    public boolean isEmailConfirmed() {
+        return emailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
+    }
+
+    public EmailConfirmation getEmailConfirmation() {
+        return emailConfirmation;
+    }
+
+    public void setEmailConfirmation(EmailConfirmation emailConfirmation) {
+        this.emailConfirmation = emailConfirmation;
+    }
+
     public Long getId() {
         return id;
     }

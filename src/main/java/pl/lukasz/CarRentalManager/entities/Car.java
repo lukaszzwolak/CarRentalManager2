@@ -1,5 +1,6 @@
 package pl.lukasz.CarRentalManager.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,12 +22,10 @@ public class Car {
     @OneToMany
     private List<Reservation> reservations;
 
-    @Size(min = 2, message = "The model must have 2 characters")
-    private String model;
-
     @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
-    private Brand brand;
+    @JoinColumn(name = "model_id", nullable = false)
+    @JsonManagedReference
+    private Model model;
 
     @Pattern(regexp="[A-Z]{2}-[0-9]{4,6}", message = "Registration must have 2 uppercase letters and 4 to 6 digits")
     private String registrationNumber;
@@ -37,8 +36,6 @@ public class Car {
     public Car() {
         status = Status.Available;
     }
-
-    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -64,20 +61,12 @@ public class Car {
         this.reservations = reservations;
     }
 
-    public @NotBlank(message = "Model is required") @Size(min = 2, message = "Model must be at least 2 characters") String getModel() {
+    public Model getModel() {
         return model;
     }
 
-    public void setModel(@NotBlank(message = "Model is required") @Size(min = 2, message = "Model must be at least 2 characters") String model) {
+    public void setModel(Model model) {
         this.model = model;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
     }
 
     public @NotBlank(message = "Registration number is required") @Pattern(regexp = "[A-Z]{2}-[0-9]{4,6}", message = "Invalid registration number format") String getRegistrationNumber() {
@@ -97,6 +86,6 @@ public class Car {
     }
 
     public String getDisplayName() {
-        return brand.getName() + " " + model + "(" + registrationNumber + ")";
+        return model.getBrand().getName() + " " + model.getName() + "(" + registrationNumber + ")";
     }
 }
