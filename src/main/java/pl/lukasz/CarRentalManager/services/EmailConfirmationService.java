@@ -1,42 +1,36 @@
 package pl.lukasz.CarRentalManager.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.lukasz.CarRentalManager.entities.Client;
 import pl.lukasz.CarRentalManager.entities.EmailConfirmation;
 import pl.lukasz.CarRentalManager.repositories.EmailConfirmationRepository;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
 public class EmailConfirmationService {
 
-    private final EmailConfirmationRepository emailConfirmationRepository;
+    @Autowired
+    private EmailConfirmationRepository emailConfirmationRepository;
 
-    public EmailConfirmationService(EmailConfirmationRepository emailConfirmationRepository) {
-        this.emailConfirmationRepository = emailConfirmationRepository;
-    }
+    public void createEmailConfirmation(Client client) {
+        EmailConfirmation emailConfirmation = new EmailConfirmation();
+        emailConfirmation.setReservation(client.getReservations().get(client.getReservations().size() - 1)); // Możesz doprecyzować, który dokładnie obiekt rezerwacji z klienta
+        emailConfirmation.setConfirmationCode(generateConfirmationCode());
+        emailConfirmation.setConfirmed(false);
 
-    public EmailConfirmation createEmailConfirmation(Client client) {
-        EmailConfirmation confirmation = new EmailConfirmation();
-        confirmation.setClient(client);
-        confirmation.setConfirmationCode(generateConfirmationCode());
-        confirmation.setExpiryDateTime(LocalDateTime.now().plusHours(24)); // Example: expires in 24 hours
+        emailConfirmationRepository.save(emailConfirmation);
 
-        return emailConfirmationRepository.save(confirmation);
+        sendConfirmationEmail(client.getEmail(), emailConfirmation.getConfirmationCode());
     }
 
     private String generateConfirmationCode() {
         return UUID.randomUUID().toString();
     }
 
-    public void confirmEmail(String confirmationCode) {
-        EmailConfirmation confirmation = emailConfirmationRepository.findByConfirmationCode(confirmationCode);
-        if (confirmation != null && !confirmation.getExpiryDateTime().isBefore(LocalDateTime.now())) {
-            Client client = confirmation.getClient();
-            client.setEmailConfirmed(true);
-        } else {
-            throw new IllegalArgumentException("Invalid or expired confirmation code");
-        }
+    private void sendConfirmationEmail(String recipientEmail, String confirmationCode) {
+        System.out.println("Sending confirmation email to: " + recipientEmail);
+        System.out.println("Confirmation code: " + confirmationCode);
     }
 }

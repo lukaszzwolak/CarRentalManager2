@@ -1,7 +1,6 @@
 package pl.lukasz.CarRentalManager.entities;
 
 import jakarta.persistence.*;
-
 import java.time.*;
 
 @Entity
@@ -16,6 +15,9 @@ public class Reservation {
 
     @ManyToOne
     private Car car;
+
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private EmailConfirmation emailConfirmation;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -71,5 +73,16 @@ public class Reservation {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public EmailConfirmation getEmailConfirmation() {
+        return emailConfirmation;
+    }
+
+    public void setEmailConfirmation(EmailConfirmation emailConfirmation) {
+        this.emailConfirmation = emailConfirmation;
+        if (emailConfirmation != null) {
+            emailConfirmation.setReservation(this);
+        }
     }
 }

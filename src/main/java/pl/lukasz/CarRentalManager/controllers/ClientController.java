@@ -15,9 +15,6 @@ public class ClientController {
     @Autowired
     private ClientService service;
 
-    @Autowired
-    private EmailConfirmationService emailConfirmationService;
-
     @GetMapping("/list")
     public String list(Model model) {
         model.addAttribute("clients", service.getAllClients());
@@ -30,7 +27,7 @@ public class ClientController {
         return "clientDirectory/client-add";
     }
 
-    @PostMapping("/addClient")
+    @PostMapping("/add")
     public String addClient(@ModelAttribute("client") Client client) {
         service.saveClient(client);
         return "redirect:/client/list";
@@ -43,7 +40,7 @@ public class ClientController {
         return "clientDirectory/client-edit";
     }
 
-    @PostMapping("/editClient")
+    @PostMapping("/edit")
     public String editClient(@ModelAttribute("client") Client client) {
         service.saveClient(client);
         return "redirect:/client/list";
@@ -53,38 +50,5 @@ public class ClientController {
     public String removeClient(@PathVariable("id") Long id) {
         service.deleteClientById(id);
         return "redirect:/client/list";
-    }
-
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("client", new Client());
-        return "clientDirectory/client-register";
-    }
-
-    @PostMapping("/registerClient")
-    public String registerClient(@ModelAttribute("client") Client client) {
-        // Save client details (excluding email confirmation status) to database
-        service.saveClient(client);
-
-        // Generate email confirmation and send email
-        emailConfirmationService.createEmailConfirmation(client);
-
-        return "redirect:/client/registration-success";
-    }
-
-    @GetMapping("/registration-success")
-    public String registrationSuccess() {
-        return "clientDirectory/client-registration-success";
-    }
-
-    @GetMapping("/confirm-email")
-    public String confirmEmail(@RequestParam("code") String confirmationCode, Model model) {
-        try {
-            emailConfirmationService.confirmEmail(confirmationCode);
-            model.addAttribute("message", "Email confirmed successfully.");
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", "Invalid or expired confirmation code.");
-        }
-        return "clientDirectory/client-email-confirmation-result";
     }
 }

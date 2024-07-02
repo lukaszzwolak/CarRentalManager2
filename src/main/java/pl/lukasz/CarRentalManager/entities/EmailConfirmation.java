@@ -1,7 +1,6 @@
 package pl.lukasz.CarRentalManager.entities;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class EmailConfirmation {
@@ -11,11 +10,11 @@ public class EmailConfirmation {
     private Long id;
 
     @OneToOne
-    private Client client;
+    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
+    private Reservation reservation;
 
     private String confirmationCode;
-
-    private LocalDateTime expiryDateTime;
+    private boolean confirmed;
 
     public Long getId() {
         return id;
@@ -25,12 +24,12 @@ public class EmailConfirmation {
         this.id = id;
     }
 
-    public Client getClient() {
-        return client;
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     public String getConfirmationCode() {
@@ -41,11 +40,11 @@ public class EmailConfirmation {
         this.confirmationCode = confirmationCode;
     }
 
-    public LocalDateTime getExpiryDateTime() {
-        return expiryDateTime;
+    public boolean isConfirmed() {
+        return confirmed;
     }
 
-    public void setExpiryDateTime(LocalDateTime expiryDateTime) {
-        this.expiryDateTime = expiryDateTime;
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 }

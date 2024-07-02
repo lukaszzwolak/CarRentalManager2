@@ -5,6 +5,4 @@ import pl.lukasz.CarRentalManager.entities.EmailConfirmation;
 
 public interface EmailConfirmationRepository extends JpaRepository<EmailConfirmation, Long> {
 
-    EmailConfirmation findByConfirmationCode(String confirmationCode);
-
 }

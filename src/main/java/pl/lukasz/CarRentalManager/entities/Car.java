@@ -106,6 +106,16 @@ public class Car {
     }
 
     public String getDisplayName() {
-        return brand.getName() + " " + carModel.getName() + "(" + registrationNumber + ")";
+        StringBuilder displayName = new StringBuilder();
+        if (brand != null) {
+            displayName.append(brand.getName()).append(" ");
+        }
+        if (carModel != null) {
+            displayName.append(carModel.getName());
+        }
+        if (registrationNumber != null) {
+            displayName.append(" (").append(registrationNumber).append(")");
+        }
+        return displayName.toString();
     }
 }

@@ -1,18 +1,23 @@
 package pl.lukasz.CarRentalManager.controllers;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.ui.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.lukasz.CarRentalManager.entities.*;
-import pl.lukasz.CarRentalManager.services.*;
+import pl.lukasz.CarRentalManager.entities.Car;
+import pl.lukasz.CarRentalManager.entities.Client;
+import pl.lukasz.CarRentalManager.entities.Reservation;
+import pl.lukasz.CarRentalManager.services.CarService;
+import pl.lukasz.CarRentalManager.services.ClientService;
+import pl.lukasz.CarRentalManager.services.EmailConfirmationService;
+import pl.lukasz.CarRentalManager.services.ReservationService;
 
 @Controller
 @RequestMapping("/reservation")
 public class ReservationController {
 
     @Autowired
-    private ReservationService service;
+    private ReservationService reservationService;
 
     @Autowired
     private ClientService clientService;
@@ -20,9 +25,13 @@ public class ReservationController {
     @Autowired
     private CarService carService;
 
+
+    @Autowired
+    private EmailConfirmationService emailConfirmationService;
+
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("reservations", service.getAllReservations());
+        model.addAttribute("reservations", reservationService.getAllReservations());
         return "reservationDirectory/reservation-list";
     }
 
@@ -35,29 +44,45 @@ public class ReservationController {
     }
 
     @PostMapping("/add")
-    public String add(Reservation reservation) {
-        service.saveReservation(reservation);
-        return "redirect:/reservation/list";
+    public String add(@ModelAttribute("reservation") Reservation reservation) {
+        Long carId = reservation.getCar().getId();
+        Car car = carService.getCarById(carId);
+
+        if (car != null) {
+            reservation.setCar(car);
+            reservationService.saveReservation(reservation);
+
+            Long clientId = reservation.getClient().getId();
+            Client client = clientService.getClientById(clientId);
+
+            if (client != null) {
+                emailConfirmationService.createEmailConfirmation(client);
+            }
+
+            return "redirect:/reservation/list";
+        } else {
+            return "redirect:/error";
+        }
     }
+
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        Reservation reservation = service.getReservationById(id);
+        Reservation reservation = reservationService.getReservationById(id);
         model.addAttribute("reservation", reservation);
         model.addAttribute("clients", clientService.getAllClients());
-        model.addAttribute("cars", carService.getAllCars());
         return "reservationDirectory/reservation-edit";
     }
 
     @PostMapping("/edit")
-    public String edit(Reservation reservation) {
-        service.saveReservation(reservation);
+    public String edit(@ModelAttribute("reservation") Reservation reservation) {
+        reservationService.saveReservation(reservation);
         return "redirect:/reservation/list";
     }
 
     @GetMapping("/remove/{id}")
     public String remove(@PathVariable("id") Long id) {
-        service.deleteReservationById(id);
+        reservationService.deleteReservationById(id);
         return "redirect:/reservation/list";
     }
 }
