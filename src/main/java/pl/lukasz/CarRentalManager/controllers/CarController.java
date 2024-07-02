@@ -3,7 +3,7 @@ package pl.lukasz.CarRentalManager.controllers;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
-import org.springframework.ui.*;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

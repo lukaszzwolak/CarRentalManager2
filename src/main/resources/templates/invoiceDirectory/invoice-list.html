@@ -52,7 +52,7 @@
     <tr th:each="invoice : ${invoices}">
         <td th:text="${invoice.id}"></td>
         <td th:text="${invoice.client.nameClient}"></td>
-        <td th:text="${invoice.car.model}"></td>
+        <td th:text="${invoice.car.carModel}"></td>
         <td th:text="${invoice.amount}"></td>
         <td th:text="${invoice.issueDate}"></td>
         <td th:text="${invoice.status}"></td>

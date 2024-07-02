@@ -77,9 +77,9 @@
     <input type="hidden" th:field="*{brand.id}" id="brandId" /><br/>
 
     <label>Model: </label>
-    <input type="text" th:field="*{model}" required/><br/>
+    <input type="text" id="modelInput" required/><br/>
+    <input type="hidden" th:field="*{model.id}" id="modelId" /><br/>
     <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span><br/>
-
 
     <label>Rejestracja: </label>
     <input type="text" th:field="*{registrationNumber}" required/><br/>
@@ -111,6 +111,31 @@
             select: function(event, ui) {
                 $("#brandInput").val(ui.item.label);
                 $("#brandId").val(ui.item.id);
+                return false;
+            }
+        });
+
+        $("#modelInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/model/autocomplete",
+                    data: {
+                        query: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data, function(model) {
+                            return {
+                                label: model.name,
+                                value: model.name,
+                                id: model.id
+                            };
+                        }));
+                    }
+                });
+            },
+            select: function(event, ui) {
+                $("#modelInput").val(ui.item.label);
+                $("#modelId").val(ui.item.id);
                 return false;
             }
         });

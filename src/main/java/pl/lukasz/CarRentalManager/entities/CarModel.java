@@ -1,6 +1,5 @@
 package pl.lukasz.CarRentalManager.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -8,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-public class Model {
+public class CarModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,15 +17,9 @@ public class Model {
     @Size(min = 2, message = "Model name must be at least 2 characters")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
-    @JsonBackReference
-    private Brand brand;
-
-    @OneToMany(mappedBy = "model")
+    @OneToMany(mappedBy = "carModel")
     private List<Car> cars;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -43,13 +36,6 @@ public class Model {
         this.name = name;
     }
 
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
 
     public List<Car> getCars() {
         return cars;

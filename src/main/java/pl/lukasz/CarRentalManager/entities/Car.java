@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -23,9 +22,14 @@ public class Car {
     private List<Reservation> reservations;
 
     @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    @JsonManagedReference
+    private Brand brand;
+
+    @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)
     @JsonManagedReference
-    private Model model;
+    private CarModel carModel;
 
     @Pattern(regexp="[A-Z]{2}-[0-9]{4,6}", message = "Registration must have 2 uppercase letters and 4 to 6 digits")
     private String registrationNumber;
@@ -61,12 +65,12 @@ public class Car {
         this.reservations = reservations;
     }
 
-    public Model getModel() {
-        return model;
+    public CarModel getModel() {
+        return carModel;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public void setModel(CarModel carModel) {
+        this.carModel = carModel;
     }
 
     public @NotBlank(message = "Registration number is required") @Pattern(regexp = "[A-Z]{2}-[0-9]{4,6}", message = "Invalid registration number format") String getRegistrationNumber() {
@@ -85,7 +89,23 @@ public class Car {
         this.status = status;
     }
 
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public CarModel getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(CarModel carModel) {
+        this.carModel = carModel;
+    }
+
     public String getDisplayName() {
-        return model.getBrand().getName() + " " + model.getName() + "(" + registrationNumber + ")";
+        return brand.getName() + " " + carModel.getName() + "(" + registrationNumber + ")";
     }
 }

@@ -52,7 +52,7 @@
     <tr th:each="reservation : ${reservations}">
         <td th:text="${reservation.id}"></td>
         <td th:text="${reservation.client.nameClient}"></td>
-        <td th:text="${reservation.car.model}"></td>
+        <td th:text="${reservation.car.carModel}"></td>
         <td th:text="${reservation.startDate}"></td>
         <td th:text="${reservation.endDate}"></td>
         <td th:text="${reservation.status}"></td>
