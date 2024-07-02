@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Model</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<a href="javascript:history.back()" style="text-decoration: none; color: #007BFF; margin-top: 20px; display: block;">
+    &lt; Return
+</a>
+
+<form action="#" th:action="@{/model/edit}" th:object="${carModel}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <label>Model Name: </label>
+    <input type="text" th:field="*{name}" required/><br/>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><br/>
+    <input type="submit"/>
+</form>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

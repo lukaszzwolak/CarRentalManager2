@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Models List</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div th:if="${successMessage}" style="color: green;">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<a href="/model/add" style="display: block; margin-top: 20px;">Add new model</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Model</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="carModel : ${models}">
+        <td th:text="${carModel.id}">1</td>
+        <td th:text="${carModel.name}">Model name</td>
+        <td>
+            <a th:href="@{/model/edit/{id}(id=${carModel.id})}">Edit</a> |
+            <a th:href="@{/model/remove/{id}(id=${carModel.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
